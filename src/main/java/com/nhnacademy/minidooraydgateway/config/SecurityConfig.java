@@ -57,7 +57,7 @@ public class SecurityConfig  {
                                 authorizeRequests
                                         .requestMatchers("/", "/home").permitAll()
 //                                .requestMatchers("/member/**").hasAnyAuthority("ROLE_MEMBER")
-                                        .anyRequest().authenticated()
+//                                        .anyRequest().authenticated()
                 );
         return http.build();
     }

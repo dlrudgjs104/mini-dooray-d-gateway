@@ -33,11 +33,4 @@ public class UserService {
         return response.getBody();
     }
 
-    public void updateUser(String userId, User user) {
-        accountServiceClient.updateUser(userId, user);
-    }
-
-    public void deleteUser(String userId) {
-        accountServiceClient.deleteUser(userId);
-    }
 }

@@ -21,3 +21,31 @@
 - AccountApi 는 멤버의 정보를 관리합니다.
 
 - ProjectApi 는 Project, Task, Comment, Tag 를 관리 합니다.
+
+<br/>
+
+
+## 요구사항 정리 
+
+### Auth
+- [ ] 로그인 기능  `POST /login`
+  - ID / PW
+  - GitHub OAuth (추가)
+- [ ] 로그아웃 기능   
+- [x] 게이트웨이 서버에서 Redis를 사용한 **세션 관리 기능**
+  - spring security + spring session
+    - security 가 로그인한 사용자 정보( `Authentication` )를 SecurityContext에 저장하고, 
+    - SecurityContextPersistenceFilter가 SecurityContext를 현재 HTTP 세션에 저장한다. 
+    - spring-session-redis는 현재 세션을 Redis에 저장한다. 
+
+
+### Routing
+- [x] 클라이언트 요청을 Account Api 및 Task Api로 라우팅
+- [x] URL 매핑 설정
+<br/>
+-> FeignClient로 데이터 호출 및 조합 
+
+
+
+
+### Test

@@ -1,6 +1,5 @@
 package com.nhnacademy.minidooraydgateway.client;
 
-import com.nhnacademy.minidooraydgateway.config.ApiEndpointsConfig;
 import com.nhnacademy.minidooraydgateway.domain.User;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.data.domain.Page;
@@ -19,10 +18,4 @@ public interface AccountServiceClient {
 
     @GetMapping("/users/{userId}")
     ResponseEntity<User> getUserById(@PathVariable("userId") String userId);
-
-    @PutMapping("/users/{userId}")
-    ResponseEntity<Void> updateUser(@PathVariable("userId") String userId, @RequestBody User user);
-
-    @DeleteMapping("/users/{userId}")
-    ResponseEntity<Void> deleteUser(@PathVariable("userId") String userId);
 }
