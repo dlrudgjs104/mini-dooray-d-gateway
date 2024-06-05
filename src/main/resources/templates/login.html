@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f8f9fa;
+        }
+
+        .login-container {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .login-container h2 {
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .login-container .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .login-container .btn-primary {
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .login-container .btn-google {
+            width: 100%;
+            background-color: #db4437;
+            color: #fff;
+        }
+
+        .login-container .btn-google:hover {
+            background-color: #c23321;
+        }
+
+        .form-text {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="login-container">
+    <h2>로그인</h2>
+    <form th:action="@{/login/process}" method="post">
+        <div class="form-group">
+            <label for="id">ID</label>
+            <input type="text" class="form-control" id="id" name="id" placeholder="Enter ID" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Enter Password"
+                   required>
+        </div>
+        <div th:if="${session.loginFailureCnt != null}">
+            <p class="text-danger text-center mt-3">로그인 실패 횟수: <span th:text="${session.loginFailureCnt}"></span></p>
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+        <a class="btn btn-google" th:href="@{/oauth2/authorization/google}">Login with Google</a>
+    </form>
+</div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
