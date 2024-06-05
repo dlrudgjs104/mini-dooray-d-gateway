@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Sign Up</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -32,29 +32,39 @@
             color: #333;
         }
 
-        .buttons .btn {
+        form {
+            margin-top: 20px;
+        }
+
+        .form-group {
+            text-align: left;
+        }
+
+        .btn {
             width: 100%;
-            margin: 10px 0;
         }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="custom-container">
-        <h1>MINI DOORAY</h1>
-        <div class="buttons d-grid gap-2 col-6 mx-auto">
-            <a href="/" class="btn btn-primary btn-lg">ENTER</a>
-            <div th:if="${#authorization.expression('isAuthenticated()')}">
-                <form action="/logout" method="POST">
-                    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-                    <button type="submit" class="btn btn-danger btn-lg">Logout</button>
-                </form>
+        <h1>Sign Up</h1>
+        <form th:action="@{/signup}" th:object="${user}" method="post">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" th:field="*{id}" class="form-control" required>
             </div>
-            <div th:unless="${#authorization.expression('isAuthenticated()')}">
-                <a href="/login" class="btn btn-success btn-lg">Login</a>
-                <a href="/signup" class="btn btn-info btn-lg">Sign Up</a>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" th:field="*{email}" class="form-control" required>
             </div>
-        </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" th:field="*{password}" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg">Sign Up</button>
+        </form>
+        <div th:if="${error}" class="error" th:text="${error}"></div>
     </div>
 </div>
 

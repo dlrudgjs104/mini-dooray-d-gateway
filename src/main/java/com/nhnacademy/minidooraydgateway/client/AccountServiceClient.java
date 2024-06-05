@@ -1,6 +1,7 @@
 package com.nhnacademy.minidooraydgateway.client;
 
 import com.nhnacademy.minidooraydgateway.domain.User;
+import com.nhnacademy.minidooraydgateway.dto.UserDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +15,7 @@ public interface AccountServiceClient {
     ResponseEntity<Page<User>> getAllUsers(Pageable pageable);
 
     @PostMapping("/users")
-    ResponseEntity<Void> saveUser(@RequestBody User user);
+    ResponseEntity<Void> saveUser(@RequestBody UserDto user);
 
     @GetMapping("/users/{userId}")
     ResponseEntity<User> getUserById(@PathVariable("userId") String userId);
