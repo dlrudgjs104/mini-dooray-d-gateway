@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>담당 업무</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 100%;
+            padding: 20px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h1 {
+            margin: 0;
+        }
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        .filters input, .filters select, .filters button {
+            padding: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .pagination div {
+            display: flex;
+            gap: 5px;
+        }
+        .pagination div button {
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>담당 업무</h1>
+        <button>더 보기</button>
+    </div>
+    <div class="filters">
+        <input type="text" placeholder="내용 검색">
+        <select>
+            <option>유형: 전체</option>
+        </select>
+        <select>
+            <option>개인 상태: 대기, 할 일, 진행 중</option>
+        </select>
+        <select>
+            <option>담당자: 임채령</option>
+        </select>
+        <select>
+            <option>태그: 전체</option>
+        </select>
+        <select>
+            <option>단계: 전체</option>
+        </select>
+        <button>더 보기</button>
+    </div>
+    <table>
+        <thead>
+        <tr>
+            <th></th>
+            <th>번호</th>
+            <th>제목</th>
+            <th>담당자</th>
+            <th>만기일</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><input type="checkbox"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <!-- 필요한 만큼의 행 추가 -->
+        </tbody>
+    </table>
+    <div class="pagination">
+        <div>
+            <button>1</button>
+            <button>2</button>
+            <button>3</button>
+        </div>
+        <div>
+            <button>&lt;</button>
+            <button>&gt;</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>

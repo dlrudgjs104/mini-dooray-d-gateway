@@ -16,6 +16,7 @@ public class ApiEndpointsConfig {
 
     public static final String USERS_ENDPOINT = "/users";
     public static final String USER_BY_ID_ENDPOINT = "/users/{userId}";
+    public static final String USER_PROJECTS_ENDPOINT = "/users/{userId}/projects";
     public static final String PROJECTS_ENDPOINT = "/projects";
     public static final String PROJECT_BY_ID_ENDPOINT = "/projects/{projectId}";
     public static final String PROJECT_MEMBERS_ENDPOINT = "/projects/{projectId}/members";

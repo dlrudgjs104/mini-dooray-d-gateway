@@ -10,6 +10,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
+import org.springframework.session.web.http.HeaderHttpSessionIdResolver;
+import org.springframework.session.web.http.HttpSessionIdResolver;
 
 @EnableRedisHttpSession
 @Configuration
@@ -33,6 +35,11 @@ public class RedisConfig {
         redisStandaloneConfiguration.setPassword(password);
         redisStandaloneConfiguration.setDatabase(database);
         return new LettuceConnectionFactory(redisStandaloneConfiguration);
+    }
+
+    @Bean
+    public HttpSessionIdResolver httpSessionIdResolver() {
+        return HeaderHttpSessionIdResolver.xAuthToken();
     }
 
     @Bean

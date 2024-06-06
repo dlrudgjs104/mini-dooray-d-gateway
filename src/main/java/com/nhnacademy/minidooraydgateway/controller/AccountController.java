@@ -1,7 +1,6 @@
 package com.nhnacademy.minidooraydgateway.controller;
 
 import com.nhnacademy.minidooraydgateway.dto.UserDto;
-import com.nhnacademy.minidooraydgateway.exception.ValidationFailedException;
 import com.nhnacademy.minidooraydgateway.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +22,7 @@ public class AccountController {
 
     @GetMapping("/signup")
     public String signupForm(Model model) {
-        model.addAttribute("user", new UserDto());
+        model.addAttribute("userDto", new UserDto("", ""));
         return "account/signup";
     }
 

@@ -7,7 +7,6 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
 
 @SpringBootApplication
 @EnableFeignClients(basePackages = "com.nhnacademy.minidooraydgateway.client")
-@EnableRedisHttpSession
 public class MiniDoorayDGatewayApplication {
     public static void main(String[] args) {
         SpringApplication.run(MiniDoorayDGatewayApplication.class, args);

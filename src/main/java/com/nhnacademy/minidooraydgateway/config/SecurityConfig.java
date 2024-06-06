@@ -6,19 +6,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity
-public class SecurityConfig  {
+public class SecurityConfig {
 
 
     @Bean
@@ -32,7 +27,7 @@ public class SecurityConfig  {
                 .formLogin(formLogin ->
                                 formLogin
                                         .loginPage("/login")
-                                        .usernameParameter("id")
+                                        .usernameParameter("email")
                                         .passwordParameter("password")
                                         .loginProcessingUrl("/login/process")
                                         .defaultSuccessUrl("/home")
@@ -54,11 +49,14 @@ public class SecurityConfig  {
                                 .permitAll()
                 )
                 .authorizeHttpRequests(authorizeRequests ->
-                                authorizeRequests
-                                        .requestMatchers("/", "/home").permitAll()
-//                                .requestMatchers("/member/**").hasAnyAuthority("ROLE_MEMBER")
-//                                        .anyRequest().authenticated()
-                );
+                        authorizeRequests
+                                .requestMatchers("/", "/home", "/signup").permitAll()
+                                .requestMatchers("/project/**").hasRole("ACTIVE")
+                                .anyRequest().authenticated()
+                )
+                .exceptionHandling(handler ->
+                        handler.accessDeniedPage("/access-denied"))
+        ;
         return http.build();
     }
 

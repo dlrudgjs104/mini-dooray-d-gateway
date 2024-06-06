@@ -3,14 +3,15 @@ package com.nhnacademy.minidooraydgateway.service;
 import com.nhnacademy.minidooraydgateway.client.AccountServiceClient;
 import com.nhnacademy.minidooraydgateway.domain.User;
 import com.nhnacademy.minidooraydgateway.dto.UserDto;
+import com.nhnacademy.minidooraydgateway.dto.UserRoleUpdateRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -19,15 +20,13 @@ public class UserService {
     private final AccountServiceClient accountServiceClient;
     private final PasswordEncoder passwordEncoder;
 
-
-    public Page<User> getAllUsers(Pageable pageable) {
-        ResponseEntity<Page<User>> response = accountServiceClient.getAllUsers(pageable);
-        return response.getBody();
-    }
-
     public void saveUser(UserDto user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        ResponseEntity<Void> response = accountServiceClient.saveUser(user);
+        UserDto encoded = new UserDto(
+                user.email(),
+                passwordEncoder.encode(user.password())
+        );
+
+        ResponseEntity<Void> response = accountServiceClient.saveUser(encoded);
         if (response.getStatusCode() != HttpStatus.CREATED) {
             if (response.getStatusCode() == HttpStatus.BAD_REQUEST) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "잘못된 사용자 데이터입니다.");
@@ -45,4 +44,18 @@ public class UserService {
         return response.getBody();
     }
 
+    public User getUserByEmail(String email) {
+        ResponseEntity<User> response = accountServiceClient.getUserById(email);
+        return response.getBody();
+    }
+
+    public void updateUserRole(List<Long> userIds, String role) {
+        UserRoleUpdateRequest request = new UserRoleUpdateRequest(userIds, role);
+        accountServiceClient.updateUserRole(request);
+    }
+
+    public List<Long> getUserIdsByEmails(List<String> emails) {
+        ResponseEntity<List<Long>> response = accountServiceClient.getUserIdsByEmails(emails);
+        return response.getBody();
+    }
 }

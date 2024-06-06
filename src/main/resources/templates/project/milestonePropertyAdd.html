@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>단계 추가</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 400px;
+            margin: 20px auto;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        .header {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        .input-group input[type="text"],
+        .input-group input[type="date"] {
+            width: calc(50% - 10px);
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .input-group input[type="text"] {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        .input-group span {
+            display: inline-block;
+            width: 50%;
+        }
+        .radio-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .radio-group label {
+            margin-left: 10px;
+            margin-right: 20px;
+        }
+        .buttons {
+            text-align: right;
+        }
+        .buttons button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .buttons button:nth-child(2) {
+            background-color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">단계 추가</div>
+    <div class="input-group">
+        <label for="milestone-name">단계명</label>
+        <input type="text" id="milestone-name" placeholder="예) 6월 1주 배포">
+    </div>
+    <div class="input-group">
+        <label>기간</label>
+        <div class="radio-group">
+            <input type="radio" id="no-period" name="period" value="none">
+            <label for="no-period">없음</label>
+            <input type="radio" id="has-period" name="period" value="has" checked>
+            <label for="has-period">있음</label>
+        </div>
+    </div>
+    <div class="input-group">
+            <span>
+                <input type="date" id="start-date" value="2024-06-06">
+            </span>
+        <span>
+                <input type="date" id="end-date" value="2024-06-12">
+            </span>
+    </div>
+    <div class="buttons">
+        <button>추가</button>
+        <button>취소</button>
+    </div>
+</div>
+</body>
+</html>
