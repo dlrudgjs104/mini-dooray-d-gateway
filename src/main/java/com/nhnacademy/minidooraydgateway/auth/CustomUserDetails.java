@@ -7,23 +7,17 @@ import java.util.Collection;
 
 public class CustomUserDetails extends org.springframework.security.core.userdetails.User {
 
-    private final String id;
-    private final String email;
+    private final Long id;
     private final User.Status status;
 
     public CustomUserDetails(User user, Collection<? extends GrantedAuthority> authorities) {
         super(user.getEmail(), user.getPassword(), authorities);
         this.id = user.getId();
-        this.email = user.getEmail();
         this.status = user.getStatus();
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
-    }
-
-    public String getEmail() {
-        return email;
     }
 
     public User.Status getStatus() {

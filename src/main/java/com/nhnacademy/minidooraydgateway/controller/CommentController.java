@@ -27,7 +27,7 @@ public class CommentController {
     // Comment 생성 처리
     @PostMapping
     public String handleCreateComment(@PathVariable Long projectId, @PathVariable Long taskId, @ModelAttribute Comment comment) {
-        commentService.createComment(taskId, comment);
+        commentService.createComment(projectId, taskId, comment);
         return "redirect:/projects/" + projectId + "/tasks/" + taskId;
     }
 

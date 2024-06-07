@@ -34,7 +34,7 @@ public class SecurityContextUtil {
 
     public Optional<Long> getCurrentUserId() {
         return getCurrentUserDetails()
-                .map(userDetails -> Long.parseLong(userDetails.getId()));
+                .map(CustomUserDetails::getId);
     }
 
     public Optional<String> getCurrentUserEmail() {
@@ -50,12 +50,12 @@ public class SecurityContextUtil {
     }
 
 
-    private Optional<CustomUserDetails> getUserDetailsFromRedis() {
+    Optional<CustomUserDetails> getUserDetailsFromRedis() {
         String sessionId = getSessionIdFromSecurityContext();
         return sessionId != null ? redisService.getUserDetailsFromSession(sessionId) : Optional.empty();
     }
 
-    private String getSessionIdFromSecurityContext() {
+    String getSessionIdFromSecurityContext() {
         return getAuthentication()
                 .map(authentication -> authentication.getDetails().toString())
                 .orElse(null);

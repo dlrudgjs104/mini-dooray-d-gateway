@@ -2,8 +2,10 @@ package com.nhnacademy.minidooraydgateway.service;
 
 import com.nhnacademy.minidooraydgateway.client.ProjectServiceClient;
 import com.nhnacademy.minidooraydgateway.domain.Task;
+import com.nhnacademy.minidooraydgateway.util.PaginationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -12,9 +14,17 @@ import org.springframework.stereotype.Service;
 public class TaskService {
     private final ProjectServiceClient projectServiceClient;
 
-    public Task getTasksByProjectId(Long projectId, Long taskId) {
+    public Task getTaskByProjectId(Long projectId, Long taskId) {
         ResponseEntity<Task> response = projectServiceClient.getTaskByProjectId(projectId, taskId);
         return response.getBody();
+    }
+
+    public Page<Task> getAllTasksByProjectId(Long projectId, Pageable pageable) {
+        ResponseEntity<Page<Task>> response = projectServiceClient.getAllTasks(projectId, pageable.getPageSize(), pageable.getPageSize(), PaginationUtil.createSortParam(pageable));
+        if (response.getStatusCode().is2xxSuccessful()) {
+            return response.getBody();
+        }
+        return null;
     }
 
     public void createTask(Long projectId, Task task) {
@@ -47,4 +57,6 @@ public class TaskService {
     public void deleteTaskMilestone(Long projectId, Long taskId) {
         projectServiceClient.deleteTaskMilestone(projectId, taskId);
     }
+
+
 }

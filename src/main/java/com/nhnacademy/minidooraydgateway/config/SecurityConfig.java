@@ -51,8 +51,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/", "/home", "/signup").permitAll()
-                                .requestMatchers("/project/**").hasRole("ACTIVE")
-                                .anyRequest().authenticated()
+                                .requestMatchers("/projects/**").authenticated()
+//                                .anyRequest().authenticated()
                 )
                 .exceptionHandling(handler ->
                         handler.accessDeniedPage("/access-denied"))
