@@ -33,7 +33,7 @@ public interface ProjectServiceClient {
                                             @RequestBody long userId);
 
     @GetMapping("/projects/{projectId}/members")
-    ResponseEntity<Page<User>> getProjectMembers(@PathVariable("projectId") String projectId,
+    ResponseEntity<Page<User>> getProjectMembers(@PathVariable("projectId") Long projectId,
                                                  @RequestParam("page") int page,
                                                  @RequestParam("size") int size);
 
@@ -50,7 +50,7 @@ public interface ProjectServiceClient {
                                            @RequestParam(required = false) String sort);
 
     @GetMapping("/projects/{projectId}/tasks/{taskId}")
-    ResponseEntity<Page<Task>> getTaskByProjectId(@PathVariable("projectId") Long projectId,
+    ResponseEntity<Task> getTaskByProjectId(@PathVariable("projectId") Long projectId,
                                             @PathVariable("taskId") Long taskId);
 
     @PostMapping("/projects/{projectId}/tasks")
@@ -72,52 +72,52 @@ public interface ProjectServiceClient {
                                           @RequestBody Comment request);
 
     @GetMapping("/projects/{projectId}/tasks/{taskId}/comments")
-    ResponseEntity<Page<Comment>> getTaskComments(@PathVariable("projectId") String projectId,
-                                                  @PathVariable("taskId") String taskId,
+    ResponseEntity<Page<Comment>> getTaskComments(@PathVariable("projectId") Long projectId,
+                                                  @PathVariable("taskId") Long taskId,
                                                   @RequestParam("page") int page,
                                                   @RequestParam("size") int size);
 
     @DeleteMapping("/projects/{projectId}/tasks/{taskId}/comments/{commentId}")
-    ResponseEntity<Void> deleteComment(@PathVariable("projectId") String projectId,
-                                       @PathVariable("taskId") String taskId,
+    ResponseEntity<Void> deleteComment(@PathVariable("projectId") Long projectId,
+                                       @PathVariable("taskId") Long taskId,
                                        @PathVariable("commentId") String commentId);
 
     @GetMapping("/projects/{projectId}/tags")
-    ResponseEntity<Page<Tag>> getProjectTags(@PathVariable("projectId") String projectId,
+    ResponseEntity<Page<Tag>> getProjectTags(@PathVariable("projectId") Long projectId,
                                              @RequestParam("page") int page,
                                              @RequestParam("size") int size);
 
     @DeleteMapping("/projects/{projectId}/tags/{tagId}")
-    ResponseEntity<Void> deleteTag(@PathVariable("projectId") String projectId,
+    ResponseEntity<Void> deleteTag(@PathVariable("projectId") Long projectId,
                                    @PathVariable("tagId") String tagId);
 
     @GetMapping("/projects/{projectId}/milestones")
-    ResponseEntity<Page<Milestone>> getProjectMilestones(@PathVariable("projectId") String projectId,
+    ResponseEntity<Page<Milestone>> getProjectMilestones(@PathVariable("projectId") Long projectId,
                                                          @RequestParam("page") int page,
                                                          @RequestParam("size") int size,
                                                          @RequestParam(required = false) String sort);
 
     @DeleteMapping("/projects/{projectId}/milestones/{milestoneId}")
-    ResponseEntity<Void> deleteMilestone(@PathVariable("projectId") String projectId,
+    ResponseEntity<Void> deleteMilestone(@PathVariable("projectId") Long projectId,
                                          @PathVariable("milestoneId") String milestoneId);
 
     @PostMapping("/projects/{projectId}/tasks/{taskId}/tags/{tagId}")
-    ResponseEntity<Void> addTagToTask(@PathVariable("projectId") String projectId,
+    ResponseEntity<Void> addTagToTask(@PathVariable("projectId") Long projectId,
                                       @PathVariable("taskId") String taskId,
                                       @PathVariable("tagId") String tagId);
 
     @DeleteMapping("/projects/{projectId}/tasks/{taskId}/tags/{tagId}")
-    ResponseEntity<Void> removeTagFromTask(@PathVariable("projectId") String projectId,
+    ResponseEntity<Void> removeTagFromTask(@PathVariable("projectId") Long projectId,
                                            @PathVariable("taskId") String taskId,
                                            @PathVariable("tagId") String tagId);
 
     @PostMapping("/projects/{projectId}/tasks/{taskId}/milestones/{milestoneId}")
-    ResponseEntity<Void> addMilestoneToTask(@PathVariable("projectId") String projectId,
+    ResponseEntity<Void> addMilestoneToTask(@PathVariable("projectId") Long projectId,
                                             @PathVariable("taskId") String taskId,
                                             @PathVariable("milestoneId") String milestoneId);
 
     @DeleteMapping("/projects/{projectId}/tasks/{taskId}/milestones/{milestoneId}")
-    ResponseEntity<Void> removeMilestoneFromTask(@PathVariable("projectId") String projectId,
+    ResponseEntity<Void> removeMilestoneFromTask(@PathVariable("projectId") Long projectId,
                                                  @PathVariable("taskId") String taskId,
                                                  @PathVariable("milestoneId") String milestoneId);
 
@@ -135,24 +135,24 @@ public interface ProjectServiceClient {
     // 마일스톤
     // Milestone for Project
     @PostMapping("/projects/{projectId}/milestones")
-    ResponseEntity<Milestone> createMilestone(@PathVariable("projectId") String projectId,
+    ResponseEntity<Milestone> createMilestone(@PathVariable("projectId") Long projectId,
                                               @RequestBody Milestone request);
 
     @GetMapping("/projects/{projectId}/milestones")
-    ResponseEntity<Page<Milestone>> getProjectMilestones(@PathVariable("projectId") String projectId,
+    ResponseEntity<Page<Milestone>> getProjectMilestones(@PathVariable("projectId") Long projectId,
                                                          @RequestParam(required = false) String sort);
 
     @GetMapping("/projects/{projectId}/milestones/{milestoneId}")
-    Milestone getMilestoneById(@PathVariable("projectId") String projectId,
+    Milestone getMilestoneById(@PathVariable("projectId") Long projectId,
                                @PathVariable("milestoneId") Long milestoneId);
 
     @PutMapping("/projects/{projectId}/milestones/{milestoneId}")
-    void updateMilestone(@PathVariable("projectId") String projectId,
+    void updateMilestone(@PathVariable("projectId") Long projectId,
                          @PathVariable("milestoneId") Long milestoneId,
                          @RequestBody Milestone milestone);
 
     @DeleteMapping("/projects/{projectId}/milestones/{milestoneId}")
-    void deleteMilestone(@PathVariable("projectId") String projectId,
+    void deleteMilestone(@PathVariable("projectId") Long projectId,
                          @PathVariable("milestoneId") Long milestoneId);
 
     // Milestone for Task
@@ -203,12 +203,12 @@ public interface ProjectServiceClient {
     // ProjectMember
     // Member for Project
     @PostMapping("/projects/{projectId}/members")
-    ResponseEntity<Milestone> createProjectMember(@PathVariable("projectId") String projectId,
+    ResponseEntity<Milestone> createProjectMember(@PathVariable("projectId") Long projectId,
                                                   @RequestBody List<Long> memberIds);
 
 
     @DeleteMapping("/projects/{projectId}/members/{memberId}")
-    void deleteProjectMember(@PathVariable("projectId") String projectId,
+    void deleteProjectMember(@PathVariable("projectId") Long projectId,
                              @PathVariable("memberId") String memberId);
 
 

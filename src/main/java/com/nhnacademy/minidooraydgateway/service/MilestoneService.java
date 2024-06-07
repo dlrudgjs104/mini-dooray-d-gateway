@@ -14,24 +14,24 @@ public class MilestoneService {
     private final ProjectServiceClient projectServiceClient;
 
     public Page<Milestone> getMilestonesByProjectId(Long projectId, String sort) {
-        return projectServiceClient.getProjectMilestones(projectId.toString(), sort).getBody();
+        return projectServiceClient.getProjectMilestones(projectId, sort).getBody();
     }
 
     public Milestone getMilestoneById(Long projectId, Long milestoneId) {
-        return projectServiceClient.getMilestoneById(projectId.toString(), milestoneId);
+        return projectServiceClient.getMilestoneById(projectId, milestoneId);
     }
 
     public void createMilestone(Long projectId, Milestone milestone) {
         milestone.setProjectId(projectId);
-        projectServiceClient.createMilestone(projectId.toString(), milestone);
+        projectServiceClient.createMilestone(projectId, milestone);
     }
 
     public void updateMilestone(Long projectId, Long milestoneId, Milestone milestone) {
-        projectServiceClient.updateMilestone(projectId.toString(), milestoneId, milestone);
+        projectServiceClient.updateMilestone(projectId, milestoneId, milestone);
     }
 
     public void deleteMilestone(Long projectId, Long milestoneId) {
-        projectServiceClient.deleteMilestone(projectId.toString(), milestoneId);
+        projectServiceClient.deleteMilestone(projectId, milestoneId);
     }
 
 //    public void setTaskMilestone(Long projectId, Long taskId, Long milestoneId) {

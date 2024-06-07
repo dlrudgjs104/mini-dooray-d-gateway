@@ -25,7 +25,7 @@ public class TaskController {
     // 특정 프로젝트의 Task 목록 페이지
     @GetMapping
     public String getTasksPage(@PathVariable Long projectId, Model model) {
-        List<Task> tasks = taskService.getTasksByProjectId(projectId);
+         taskService.getAllTasks(projectId);
         model.addAttribute("tasks", tasks);
         model.addAttribute("projectId", projectId);
         return "task/taskList";
