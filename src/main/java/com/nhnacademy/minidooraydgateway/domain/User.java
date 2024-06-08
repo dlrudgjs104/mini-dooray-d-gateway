@@ -28,6 +28,6 @@ public class User {
     }
 
     public enum Role {
-        USER, PROJECT_MEMBER, PROJECT_ADMIN;
+        MEMBER, PROJECT_MEMBER, PROJECT_ADMIN;
     }
 }

@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
@@ -12,8 +14,8 @@ public class MilestoneService {
 
     private final ProjectServiceClient projectServiceClient;
 
-    public Page<Milestone> getMilestonesByProjectId(Long projectId, String sort) {
-        return projectServiceClient.getProjectMilestones(projectId, sort).getBody();
+    public List<Milestone> getMilestonesByProjectId(Long projectId) {
+        return projectServiceClient.getProjectMilestones(projectId).getBody();
     }
 
     public Milestone getMilestoneById(Long projectId, Long milestoneId) {

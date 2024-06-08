@@ -1,7 +1,9 @@
 package com.nhnacademy.minidooraydgateway.domain;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
 
+@Data
 public class Task {
     public enum TaskStatus {
         TODO,
@@ -9,12 +11,12 @@ public class Task {
         DONE;
     }
 
-    private String taskName;
+    private String name;
 
-    private String taskDescription;
+    private String description;
 
     @NotBlank
-    private TaskStatus taskStatus;
+    private TaskStatus status;
 
     private Long taskId;
 

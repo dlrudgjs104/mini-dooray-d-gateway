@@ -3,6 +3,7 @@ package com.nhnacademy.minidooraydgateway.service;
 import com.nhnacademy.minidooraydgateway.client.ProjectServiceClient;
 import com.nhnacademy.minidooraydgateway.domain.Project;
 import com.nhnacademy.minidooraydgateway.dto.ProjectCreateDto;
+import com.nhnacademy.minidooraydgateway.dto.ProjectGetDto;
 import com.nhnacademy.minidooraydgateway.util.PaginationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,18 +17,18 @@ public class ProjectService {
 
     private final ProjectServiceClient projectServiceClient;
 
-    public Page<Project> getAllProjectsByUserId(Pageable pageable, Long userId) {
-        ResponseEntity<Page<Project>> response = projectServiceClient.getAllProjectsByUserId(
-                userId,
-                pageable.getPageNumber(),
-                pageable.getPageSize(),
-                PaginationUtil.createSortParam(pageable)
-        );
-        return response.getBody();
-    }
+//    public Page<Project> getAllProjectsByUserId(Pageable pageable, Long userId) {
+//        ResponseEntity<Page<Project>> response = projectServiceClient.getAllProjectsByUserId(
+//                userId,
+//                pageable.getPageNumber(),
+//                pageable.getPageSize(),
+//                PaginationUtil.createSortParam(pageable)
+//        );
+//        return response.getBody();
+//    }
 
-    public ProjectCreateDto getProjectById(Long projectId) {
-        ResponseEntity<ProjectCreateDto> response = projectServiceClient.getProjectById(projectId);
+    public ProjectGetDto getProjectById(Long projectId) {
+        ResponseEntity<ProjectGetDto> response = projectServiceClient.getProjectById(projectId);
         return response.getBody();
     }
 
@@ -36,12 +37,12 @@ public class ProjectService {
     }
 
 
-    public Page<Project> getAllProjectsByUserId(long userId, Pageable pageable) {
-        ResponseEntity<Page<Project>> response = projectServiceClient.getAllProjectsByUserId(userId,
+    public Page<ProjectGetDto> getAllProjectsByUserId(Pageable pageable, long userId) {
+        ResponseEntity<Page<ProjectGetDto>> response = projectServiceClient.getAllProjectsByUserId(userId,
                 pageable.getPageNumber(),
                 pageable.getPageSize(),
                 PaginationUtil.createSortParam(pageable));
 
-        return null;
+        return response.getBody();
     }
 }

@@ -2,6 +2,7 @@ package com.nhnacademy.minidooraydgateway.service;
 
 import com.nhnacademy.minidooraydgateway.client.ProjectServiceClient;
 import com.nhnacademy.minidooraydgateway.domain.Task;
+import com.nhnacademy.minidooraydgateway.dto.TaskCreateRequest;
 import com.nhnacademy.minidooraydgateway.util.PaginationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,7 +28,7 @@ public class TaskService {
         return null;
     }
 
-    public void createTask(Long projectId, Task task) {
+    public void createTask(Long projectId, TaskCreateRequest task) {
         projectServiceClient.createTask(projectId, task);
     }
 

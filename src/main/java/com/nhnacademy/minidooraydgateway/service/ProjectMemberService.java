@@ -22,8 +22,8 @@ public class ProjectMemberService {
         projectServiceClient.addMemberToProject(projectId, ProjectMemberDto.builder().memberIds(memberIds).build());
     }
 
-    public Page<User> getAllProjectMembers(Long projectId, Pageable pageable) {
-        ResponseEntity<Page<User>> response = projectServiceClient.getProjectMembers(projectId, pageable.getPageNumber(), pageable.getPageSize(), PaginationUtil.createSortParam(pageable));
+    public List<Long> getAllProjectMembers(Long projectId) {
+        ResponseEntity<List<Long>> response = projectServiceClient.getProjectMembers(projectId);
         return response.getBody();
     }
 

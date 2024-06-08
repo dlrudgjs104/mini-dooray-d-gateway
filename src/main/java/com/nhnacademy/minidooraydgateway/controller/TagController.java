@@ -12,15 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
-import lombok.RequiredArgsConstructor;
-
 @Controller
 @RequestMapping("/projects/{projectId}/tags")
 @RequiredArgsConstructor
@@ -31,17 +22,17 @@ public class TagController {
     // 특정 프로젝트의 Tag 목록 페이지
     @GetMapping
     public String getTagsPage(@PathVariable Long projectId, @PageableDefault(size = 10) Pageable pageable, Model model) {
-        Page<Tag> tags = tagService.getTagsByProjectId(projectId, pageable);
+        List<Tag> tags = tagService.getTagsByProjectId(projectId);
         model.addAttribute("tags", tags);
         return "project/tag";
     }
 
     // Tag 생성 및 관리 페이지
-    @GetMapping("/management")
+    @GetMapping("/new")
     public String getTagManagementPage(@PathVariable Long projectId, Model model) {
         model.addAttribute("tag", new Tag());
         model.addAttribute("projectId", projectId);
-        return "project/tagManagement";
+        return "project/newTag";
     }
 
     // Tag 생성 처리

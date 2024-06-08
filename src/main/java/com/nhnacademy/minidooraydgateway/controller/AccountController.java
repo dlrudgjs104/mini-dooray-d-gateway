@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.stream.Collectors;
@@ -22,7 +23,7 @@ public class AccountController {
 
     @GetMapping("/signup")
     public String signupForm(Model model) {
-        model.addAttribute("user", UserCreateRequest.builder().build());
+        model.addAttribute("userDto", UserCreateRequest.builder().build());
         return "account/signup";
     }
 
@@ -39,7 +40,7 @@ public class AccountController {
 
         try {
             userService.saveUser(userCreateRequest);
-            return "redirect:/login";
+            return "home";
         } catch (ResponseStatusException ex) {
             model.addAttribute("error", ex.getReason());
             return "account/signup";

@@ -3,9 +3,9 @@ package com.nhnacademy.minidooraydgateway.service;
 import com.nhnacademy.minidooraydgateway.client.ProjectServiceClient;
 import com.nhnacademy.minidooraydgateway.domain.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -13,8 +13,8 @@ public class TagService {
 
     private final ProjectServiceClient projectServiceClient;
 
-    public Page<Tag> getTagsByProjectId(Long projectId, Pageable pageable) {
-        return projectServiceClient.getTagsByProjectId(projectId, pageable);
+    public List<Tag> getTagsByProjectId(Long projectId) {
+        return projectServiceClient.getTagsByProjectId(projectId);
     }
 
     public Tag getTagById(Long projectId, Long tagId) {

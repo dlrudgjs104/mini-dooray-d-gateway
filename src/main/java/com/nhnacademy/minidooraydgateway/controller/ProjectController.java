@@ -4,6 +4,7 @@ import com.nhnacademy.minidooraydgateway.domain.Project;
 import com.nhnacademy.minidooraydgateway.domain.User;
 import com.nhnacademy.minidooraydgateway.dto.ProjectCreateDto;
 import com.nhnacademy.minidooraydgateway.dto.ProjectCreateRequest;
+import com.nhnacademy.minidooraydgateway.dto.ProjectGetDto;
 import com.nhnacademy.minidooraydgateway.exception.LoginRequiredException;
 import com.nhnacademy.minidooraydgateway.service.ProjectService;
 import com.nhnacademy.minidooraydgateway.service.UserService;
@@ -39,7 +40,7 @@ public class ProjectController {
         }
 
         long userId = userIdOpt.get();
-        Page<Project> projects = projectService.getAllProjectsByUserId(userId, pageable);
+        Page<ProjectGetDto> projects = projectService.getAllProjectsByUserId(pageable, userId);
         model.addAttribute("projects", projects);
         return "project/projectList";
     }
@@ -48,8 +49,10 @@ public class ProjectController {
     @GetMapping("/new")
     public String getNewProjectPage(Model model) {
         model.addAttribute("project", ProjectCreateRequest.builder().memberEmails(new LinkedList<>()).build());
+        model.addAttribute("statuses", Project.Status.values());
         return "project/newProject";
     }
+
 
     // 프로젝트 생성 처리
     @PostMapping
@@ -61,7 +64,9 @@ public class ProjectController {
         long userId = userIdOpt.get();
 
         if (!securityContextUtil.hasAuthority(User.Role.PROJECT_ADMIN.name())) {
-            userService.updateUserRole(Collections.singletonList(securityContextUtil.getCurrentUserEmail().get()), "PROJECT_ADMIN");
+            String email = securityContextUtil.getCurrentUserEmail()
+                    .orElseThrow(() -> new IllegalStateException("User email not found"));
+            userService.updateUserRole(Collections.singletonList(email), "PROJECT_ADMIN");
         }
 
         userService.updateUserRole(projectCreateRequest.memberEmails(), User.Role.PROJECT_MEMBER.name());
@@ -79,4 +84,5 @@ public class ProjectController {
 
         return "redirect:/projects";
     }
+
 }

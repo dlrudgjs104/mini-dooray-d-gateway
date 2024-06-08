@@ -10,7 +10,7 @@ public class Project {
 
 
     public enum Status {
-        ACTIVE("활성"), ENDED("종료"), DORMANT("휴면");
+        TODO("할일"), IN_PROGRESS("진행중"), DONE("완료");
 
         private final String description;
 

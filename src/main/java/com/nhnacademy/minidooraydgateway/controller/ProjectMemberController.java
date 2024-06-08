@@ -1,8 +1,6 @@
 package com.nhnacademy.minidooraydgateway.controller;
 
-import com.nhnacademy.minidooraydgateway.domain.ProjectMember;
 import com.nhnacademy.minidooraydgateway.domain.User;
-import com.nhnacademy.minidooraydgateway.dto.ProjectMemberDto;
 import com.nhnacademy.minidooraydgateway.service.ProjectMemberService;
 import com.nhnacademy.minidooraydgateway.service.UserService;
 import lombok.RequiredArgsConstructor;

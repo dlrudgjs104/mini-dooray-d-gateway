@@ -4,7 +4,6 @@ import com.nhnacademy.minidooraydgateway.domain.User;
 import com.nhnacademy.minidooraydgateway.exception.NonActiveMemberException;
 import com.nhnacademy.minidooraydgateway.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

@@ -25,7 +25,7 @@ public class MilestoneController {
     public String getMilestonesPage(@PathVariable Long projectId,
                                     @RequestParam(required = false) String sort,
                                     Model model) {
-        Page<Milestone> milestones = milestoneService.getMilestonesByProjectId(projectId, sort);
+//        Page<Milestone> milestones = milestoneService.getMilestonesByProjectId(projectId, sort);
         model.addAttribute("milestones", milestones);
         model.addAttribute("projectId", projectId);
         return "milestone/milestoneList";

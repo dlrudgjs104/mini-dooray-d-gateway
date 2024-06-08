@@ -2,7 +2,9 @@ package com.nhnacademy.minidooraydgateway.client;
 
 import com.nhnacademy.minidooraydgateway.domain.*;
 import com.nhnacademy.minidooraydgateway.dto.ProjectCreateDto;
+import com.nhnacademy.minidooraydgateway.dto.ProjectGetDto;
 import com.nhnacademy.minidooraydgateway.dto.ProjectMemberDto;
+import com.nhnacademy.minidooraydgateway.dto.TaskCreateRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,16 +18,16 @@ public interface ProjectServiceClient {
 
     // 특정 유저의 프로젝트 목록 조회
     @GetMapping("/users/{userId}/projects")
-    ResponseEntity<Page<Project>> getAllProjectsByUserId(@PathVariable long userId,
-                                                         @RequestParam("page") int page,
-                                                         @RequestParam("size") int size,
-                                                         @RequestParam(required = false) String sort);
+    ResponseEntity<Page<ProjectGetDto>> getAllProjectsByUserId(@PathVariable long userId,
+                                                               @RequestParam("page") int page,
+                                                               @RequestParam("size") int size,
+                                                               @RequestParam(required = false) String sort);
 
 
     // Project
     // 특정 프로젝트 조회
     @GetMapping("/projects/{projectId}")
-    ResponseEntity<ProjectCreateDto> getProjectById(@PathVariable("projectId") Long projectId);
+    ResponseEntity<ProjectGetDto> getProjectById(@PathVariable("projectId") Long projectId);
 
     // 프로적트 생성
     @PostMapping("/projects")
@@ -38,15 +40,9 @@ public interface ProjectServiceClient {
     ResponseEntity<Milestone> addMemberToProject(@PathVariable("projectId") Long projectId,
                                                  @RequestBody ProjectMemberDto memberIds);
 
-//    @PostMapping("/projects/{projectId}/members/{memberId}")
-//    ResponseEntity<Void> addMemberToProject(@PathVariable("projectId") long projectId,
-//                                            @PathVariable("memberId") long memberId);
-
+    // 멤버 Ids 가져옴
     @GetMapping("/projects/{projectId}/members")
-    ResponseEntity<Page<User>> getProjectMembers(@PathVariable("projectId") Long projectId,
-                                                 @RequestParam("page") int page,
-                                                 @RequestParam("size") int size,
-                                                 @RequestParam(required = false) String sort);
+    ResponseEntity<List<Long>> getProjectMembers(@PathVariable("projectId") Long projectId);
 
 
     // Task
@@ -62,7 +58,7 @@ public interface ProjectServiceClient {
 
     @PostMapping("/projects/{projectId}/tasks")
     ResponseEntity<Task> createTask(@PathVariable("projectId") Long projectId,
-                                    @RequestBody Task request);
+                                    @RequestBody TaskCreateRequest request);
 
     @PutMapping("/projects/{projectId}/tasks/{taskId}")
     ResponseEntity<Task> updateTask(@PathVariable("projectId") Long projectId,
@@ -136,8 +132,7 @@ public interface ProjectServiceClient {
                                               @RequestBody Milestone request);
 
     @GetMapping("/projects/{projectId}/milestones")
-    ResponseEntity<Page<Milestone>> getProjectMilestones(@PathVariable("projectId") Long projectId,
-                                                         @RequestParam(required = false) String sort);
+    ResponseEntity<List<Milestone>> getProjectMilestones(@PathVariable("projectId") Long projectId);
 
     @GetMapping("/projects/{projectId}/milestones/{milestoneId}")
     Milestone getMilestoneById(@PathVariable("projectId") Long projectId,
@@ -170,7 +165,7 @@ public interface ProjectServiceClient {
                                   @RequestBody Tag request);
 
     @GetMapping("/projects/{projectId}/tags")
-    Page<Tag> getTagsByProjectId(@PathVariable("projectId") Long projectId, Pageable pageable);
+    List<Tag> getTagsByProjectId(@PathVariable("projectId") Long projectId);
 
     @GetMapping("/projects/{projectId}/tags/{tagId}")
     Tag getTagById(@PathVariable("projectId") Long projectId,

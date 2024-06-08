@@ -1,13 +1,19 @@
 package com.nhnacademy.minidooraydgateway.controller;
 
+import com.nhnacademy.minidooraydgateway.domain.Milestone;
+import com.nhnacademy.minidooraydgateway.domain.Tag;
 import com.nhnacademy.minidooraydgateway.domain.Task;
-import com.nhnacademy.minidooraydgateway.service.TaskService;
+import com.nhnacademy.minidooraydgateway.dto.ProjectGetDto;
+import com.nhnacademy.minidooraydgateway.dto.TaskCreateRequest;
+import com.nhnacademy.minidooraydgateway.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @Controller
@@ -16,31 +22,30 @@ import org.springframework.web.bind.annotation.*;
 public class TaskController {
 
     private final TaskService taskService;
+    private final ProjectService projectService;
+    private final ProjectMemberService projectMemberService;
+    private final TagService tagService;
+    private final MilestoneService milestoneService;
+    private final UserService userService;
 
     // 특정 프로젝트의 Task 목록 페이지
     @GetMapping
     public String getTasksPage(@PathVariable Long projectId,
                                Pageable pageable,
                                Model model) {
+        ProjectGetDto project = projectService.getProjectById(projectId);
         Page<Task> tasks = taskService.getAllTasksByProjectId(projectId, pageable);
+        List<Tag> tags = tagService.getTagsByProjectId(projectId);
+        List<Milestone> milestones = milestoneService.getMilestonesByProjectId(projectId);
+        List<Long> memberIds = projectMemberService.getAllProjectMembers(projectId);
+
+        model.addAttribute("project", project);
         model.addAttribute("tasks", tasks);
+        model.addAttribute("tags", tags);
+        model.addAttribute("milestones", milestones);
+        model.addAttribute("members", memberIds);
         model.addAttribute("projectId", projectId);
-        return "task/taskList";
-    }
-
-    // Task 생성 페이지
-    @GetMapping("/new")
-    public String getNewTaskPage(@PathVariable Long projectId, Model model) {
-        model.addAttribute("task", new Task());
-        model.addAttribute("projectId", projectId);
-        return "task/newTask";
-    }
-
-    // Task 생성 처리
-    @PostMapping
-    public String handleCreateTask(@PathVariable Long projectId, @ModelAttribute Task task) {
-        taskService.createTask(projectId, task);
-        return "redirect:/projects/" + projectId + "/tasks";
+        return "project/taskList";
     }
 
     // Task 상세 정보 페이지
@@ -50,6 +55,20 @@ public class TaskController {
         model.addAttribute("task", task);
         model.addAttribute("projectId", projectId);
         return "task/taskDetail";
+    }
+
+    // Task 생성 페이지
+    @GetMapping("/new")
+    public String getNewTaskPage(@PathVariable Long projectId, Model model) {
+        model.addAttribute("task", TaskCreateRequest.builder().build());
+        return "task/newTask";
+    }
+
+    // Task 생성 처리
+    @PostMapping
+    public String handleCreateTask(@PathVariable Long projectId, @ModelAttribute TaskCreateRequest taskCreateRequest) {
+        taskService.createTask(projectId, taskCreateRequest);
+        return "redirect:/projects/" + projectId + "/tasks";
     }
 
     // Task 수정 페이지

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>프로젝트 설정</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+    <style>
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            margin-right: auto;
+        }
+        .buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .filters, .details {
+            margin-top: 20px;
+        }
+        .filter-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .filter-label {
+            width: 100px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .details span {
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .task-list {
+            margin-top: 20px;
+        }
+        .task-item {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+        .task-item:hover {
+            background-color: #f0f0f0;
+        }
+        .task-item h5 {
+            margin: 0;
+        }
+        .task-item .description {
+            color: #666;
+        }
+    </style>
+    <script>
+        function goToTaskDetail(projectId, taskId) {
+            window.location.href = `/projects/${projectId}/tasks/${taskId}`;
+        }
+    </script>
+</head>
+<body>
+<div class="container-fluid full-width">
+    <div class="header">
+        <h1 th:text="${project.name}">프로젝트 제목</h1>
+        <div class="buttons">
+            <a th:href="@{'/projects/' + ${projectId} + '/tasks/new'}" class="btn btn-primary">업무 추가</a>
+            <a th:href="@{'/projects/' + ${projectId} + '/milestones/new'}" class="btn btn-primary">마일스톤 추가</a>
+            <a th:href="@{'/projects/' + ${projectId} + '/tags/new'}" class="btn btn-primary">태그 추가</a>
+        </div>
+    </div>
+
+    <form id="filterForm" th:action="@{/projects/{projectId}/tasks(projectId=${project.id})}" method="get">
+        <div class="filters">
+            <div class="form-group d-inline-block">
+                <label for="search" class="filter-label">내용 검색:</label>
+                <input type="text" id="search" name="search" placeholder="내용 검색" class="form-control d-inline w-75">
+            </div>
+            <div class="form-group d-inline-block">
+                <label for="projectStatus" class="filter-label">유형:</label>
+                <select id="projectStatus" name="projectStatus" class="form-select d-inline w-75">
+                    <option value="">전체</option>
+                    <option th:each="status : ${T(com.nhnacademy.minidooraydgateway.domain.Project.Status).values()}" th:value="${status.name()}" th:text="${status.description}"></option>
+                </select>
+            </div>
+            <div class="form-group d-inline-block">
+                <label for="taskStatus" class="filter-label">업무 상태:</label>
+                <select id="taskStatus" name="taskStatus" class="form-select d-inline w-75">
+                    <option value="ALL">전체</option>
+                    <option value="TODO">할 일</option>
+                    <option value="IN_PROGRESS">진행 중</option>
+                    <option value="DONE">완료</option>
+                </select>
+            </div>
+            <div class="form-group d-inline-block">
+                <label for="assignedTo" class="filter-label">담당자:</label>
+                <select id="assignedTo" name="assignedTo" class="form-select d-inline w-75">
+                    <option value="">전체</option>
+                    <option th:each="member : ${members}" th:value="${member}" th:text="${member}"></option>
+                </select>
+            </div>
+            <div class="form-group d-inline-block">
+                <label for="tag" class="filter-label">태그:</label>
+                <select id="tag" name="tag" class="form-select d-inline w-75">
+                    <option value="">전체</option>
+                    <option th:each="tag : ${tags}" th:value="${tag.id}" th:text="${tag.name}"></option>
+                </select>
+            </div>
+            <div class="form-group d-inline-block">
+                <label for="milestone" class="filter-label">단계:</label>
+                <select id="milestone" name="milestone" class="form-select d-inline w-75">
+                    <option value="">전체</option>
+                    <option th:each="milestone : ${milestones}" th:value="${milestone.id}" th:text="${milestone.name}"></option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">검색</button>
+        </div>
+    </form>
+
+    <div class="details">
+        <div class="status-select">
+            <span>업무 상태:</span>
+            <span th:text="${project.status.description}">업무 상태</span>
+        </div>
+        <div>
+            <span>등록자:</span>
+            <span th:text="${userId}">등록자 ID</span>
+        </div>
+        <div>
+            <span>멤버:</span>
+            <span th:each="member : ${members}" th:text="${member}">프로젝트에 등록할 멤버 필요</span>
+        </div>
+    </div>
+
+    <div class="task-list">
+        <h3>태스크 목록</h3>
+        <div th:each="task : ${tasks.content}" class="task-item" th:onclick="|goToTaskDetail(${projectId}, ${task.taskId})|">
+            <h5 th:text="${task.name}">태스크 이름</h5>
+            <p class="description" th:text="${task.description}">태스크 설명</p>
+            <p>
+                <span th:text="${task.status}">상태</span> |
+                <span th:text="${task.milestoneId}">마일스톤 ID</span> |
+                <span th:each="tag : ${task.tags}" th:text="${tag.name}">태그</span>
+            </p>
+        </div>
+    </div>
+
+    <!-- 페이지네이션 -->
+    <div class="d-flex justify-content-center mt-3">
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <li th:classappend="${tasks.hasPrevious()} ? 'page-item' : 'page-item disabled'">
+                    <a class="page-link" th:href="@{'/projects/' + ${projectId} + '/tasks?page=' + ${tasks.number - 1}}">&laquo;</a>
+                </li>
+                <li th:each="page : ${#numbers.sequence(0, tasks.totalPages - 1)}"
+                    th:classappend="${page == tasks.number} ? 'page-item active' : 'page-item'">
+                    <a class="page-link" th:href="@{'/projects/' + ${projectId} + '/tasks?page=' + ${page}}"
+                       th:text="${page + 1}">1</a>
+                </li>
+                <li th:classappend="${tasks.hasNext()} ? 'page-item' : 'page-item disabled'">
+                    <a class="page-link" th:href="@{'/projects/' + ${projectId} + '/tasks?page=' + ${tasks.number + 1}}">&raquo;</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="d-flex justify-content-end mt-3">
+        <a th:href="@{'/projects'}" class="btn btn-secondary">프로젝트 리스트로 돌아가기</a>
+    </div>
+</div>
+</body>
+</html>

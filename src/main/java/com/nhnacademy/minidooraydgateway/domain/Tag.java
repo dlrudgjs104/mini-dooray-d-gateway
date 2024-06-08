@@ -5,10 +5,10 @@ import lombok.Data;
 
 @Data
 public class Tag {
-    private Long tagId;
+    private Long id;
 
     @NotBlank
-    private String tagName;
+    private String name;
 
     private long taskId;
 
