@@ -2,7 +2,7 @@ package com.nhnacademy.minidooraydgateway.service;
 
 import com.nhnacademy.minidooraydgateway.client.ProjectServiceClient;
 import com.nhnacademy.minidooraydgateway.domain.Project;
-import com.nhnacademy.minidooraydgateway.dto.ProjectDto;
+import com.nhnacademy.minidooraydgateway.dto.ProjectCreateDto;
 import com.nhnacademy.minidooraydgateway.util.PaginationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,13 +26,13 @@ public class ProjectService {
         return response.getBody();
     }
 
-    public ProjectDto getProjectById(Long projectId) {
-        ResponseEntity<ProjectDto> response = projectServiceClient.getProjectById(projectId);
+    public ProjectCreateDto getProjectById(Long projectId) {
+        ResponseEntity<ProjectCreateDto> response = projectServiceClient.getProjectById(projectId);
         return response.getBody();
     }
 
-    public void createProject(ProjectDto projectDto) {
-        projectServiceClient.createProject(projectDto);
+    public void createProject(ProjectCreateDto projectCreateDto) {
+        projectServiceClient.createProject(projectCreateDto);
     }
 
 

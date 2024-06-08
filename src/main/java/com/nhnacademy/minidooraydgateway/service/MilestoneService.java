@@ -1,5 +1,4 @@
 package com.nhnacademy.minidooraydgateway.service;
-
 import com.nhnacademy.minidooraydgateway.client.ProjectServiceClient;
 import com.nhnacademy.minidooraydgateway.domain.Milestone;
 import lombok.RequiredArgsConstructor;

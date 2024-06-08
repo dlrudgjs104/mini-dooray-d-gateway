@@ -1,10 +1,16 @@
 package com.nhnacademy.minidooraydgateway.service;
 
 import com.nhnacademy.minidooraydgateway.client.ProjectServiceClient;
+import com.nhnacademy.minidooraydgateway.domain.User;
+import com.nhnacademy.minidooraydgateway.dto.ProjectMemberDto;
+import com.nhnacademy.minidooraydgateway.util.PaginationUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -12,12 +18,13 @@ public class ProjectMemberService {
 
     private final ProjectServiceClient projectServiceClient;
 
-    public void addMemberToProject(Long projectId, Long userId) {
-        projectServiceClient.addMemberToProject(projectId, userId);
+    public void addMemberToProject(Long projectId, List<Long> memberIds) {
+        projectServiceClient.addMemberToProject(projectId, ProjectMemberDto.builder().memberIds(memberIds).build());
     }
 
-    public void removeMemberFromProject(Long projectId, Long memberId) {
-        projectServiceClient.removeMemberFromProject(projectId, memberId);
+    public Page<User> getAllProjectMembers(Long projectId, Pageable pageable) {
+        ResponseEntity<Page<User>> response = projectServiceClient.getProjectMembers(projectId, pageable.getPageNumber(), pageable.getPageSize(), PaginationUtil.createSortParam(pageable));
+        return response.getBody();
     }
 
 }

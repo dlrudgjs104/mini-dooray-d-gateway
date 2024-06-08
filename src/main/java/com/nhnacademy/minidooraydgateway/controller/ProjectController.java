@@ -1,8 +1,9 @@
 package com.nhnacademy.minidooraydgateway.controller;
 
 import com.nhnacademy.minidooraydgateway.domain.Project;
-import com.nhnacademy.minidooraydgateway.dto.ProjectDto;
-import com.nhnacademy.minidooraydgateway.dto.ProjectForm;
+import com.nhnacademy.minidooraydgateway.domain.User;
+import com.nhnacademy.minidooraydgateway.dto.ProjectCreateDto;
+import com.nhnacademy.minidooraydgateway.dto.ProjectCreateRequest;
 import com.nhnacademy.minidooraydgateway.exception.LoginRequiredException;
 import com.nhnacademy.minidooraydgateway.service.ProjectService;
 import com.nhnacademy.minidooraydgateway.service.UserService;
@@ -16,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,31 +47,35 @@ public class ProjectController {
     // 프로젝트 생성 페이지
     @GetMapping("/new")
     public String getNewProjectPage(Model model) {
-        model.addAttribute("project", new ProjectForm("", null, "", null));
+        model.addAttribute("project", ProjectCreateRequest.builder().memberEmails(new LinkedList<>()).build());
         return "project/newProject";
     }
 
     // 프로젝트 생성 처리
     @PostMapping
-    public String handleCreateProject(@RequestBody ProjectForm projectForm) {
+    public String handleCreateProject(@RequestBody ProjectCreateRequest projectCreateRequest) {
         Optional<Long> userIdOpt = securityContextUtil.getCurrentUserId();
         if (userIdOpt.isEmpty()) {
             throw new LoginRequiredException();
         }
+        long userId = userIdOpt.get();
 
-        Long userId = userIdOpt.get();
-        boolean isProjectAdmin = securityContextUtil.hasAuthority("PROJECT_ADMIN");
-        if (!isProjectAdmin) {
-            userService.updateUserRole(Collections.singletonList(userId), "PROJECT_ADMIN");
+        if (!securityContextUtil.hasAuthority(User.Role.PROJECT_ADMIN.name())) {
+            userService.updateUserRole(Collections.singletonList(securityContextUtil.getCurrentUserEmail().get()), "PROJECT_ADMIN");
         }
 
-        List<Long> projectMemberIds = userService.getUserIdsByEmails(projectForm.memberEmails());
-        if (projectMemberIds != null && !projectMemberIds.isEmpty()) {
-            userService.updateUserRole(projectMemberIds, "PROJECT_MEMBER");
-        }
+        userService.updateUserRole(projectCreateRequest.memberEmails(), User.Role.PROJECT_MEMBER.name());
+        List<Long> memberIdsByEmails = userService.getUserIdsByEmails(projectCreateRequest.memberEmails());
 
-        ProjectDto projectDto = new ProjectDto(projectForm.name(), projectForm.status(), userId, projectMemberIds);
-        projectService.createProject(projectDto);
+
+        ProjectCreateDto projectCreateDto = ProjectCreateDto.builder()
+                .name(projectCreateRequest.name())
+                .status(projectCreateRequest.status())
+                .adminUserId(userId)
+                .memberIds(memberIdsByEmails)
+                .build();
+
+        projectService.createProject(projectCreateDto);
 
         return "redirect:/projects";
     }

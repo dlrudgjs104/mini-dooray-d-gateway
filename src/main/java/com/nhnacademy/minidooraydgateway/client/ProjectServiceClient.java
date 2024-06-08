@@ -1,7 +1,8 @@
 package com.nhnacademy.minidooraydgateway.client;
 
 import com.nhnacademy.minidooraydgateway.domain.*;
-import com.nhnacademy.minidooraydgateway.dto.ProjectDto;
+import com.nhnacademy.minidooraydgateway.dto.ProjectCreateDto;
+import com.nhnacademy.minidooraydgateway.dto.ProjectMemberDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,24 +23,30 @@ public interface ProjectServiceClient {
 
 
     // Project
+    // 특정 프로젝트 조회
     @GetMapping("/projects/{projectId}")
-    ResponseEntity<ProjectDto> getProjectById(@PathVariable("projectId") Long projectId);
+    ResponseEntity<ProjectCreateDto> getProjectById(@PathVariable("projectId") Long projectId);
 
+    // 프로적트 생성
     @PostMapping("/projects")
-    ResponseEntity<Project> createProject(@RequestBody ProjectDto projectDto);
+    ResponseEntity<Project> createProject(@RequestBody ProjectCreateDto projectCreateDto);
 
+
+    // ProjectMember
+    // Member for Project
     @PostMapping("/projects/{projectId}/members")
-    ResponseEntity<Void> addMemberToProject(@PathVariable("projectId") long projectId,
-                                            @RequestBody long userId);
+    ResponseEntity<Milestone> addMemberToProject(@PathVariable("projectId") Long projectId,
+                                                 @RequestBody ProjectMemberDto memberIds);
+
+//    @PostMapping("/projects/{projectId}/members/{memberId}")
+//    ResponseEntity<Void> addMemberToProject(@PathVariable("projectId") long projectId,
+//                                            @PathVariable("memberId") long memberId);
 
     @GetMapping("/projects/{projectId}/members")
     ResponseEntity<Page<User>> getProjectMembers(@PathVariable("projectId") Long projectId,
                                                  @RequestParam("page") int page,
-                                                 @RequestParam("size") int size);
-
-    @DeleteMapping("/projects/{projectId}/members/{memberId}")
-    ResponseEntity<Void> removeMemberFromProject(@PathVariable("projectId") long projectId,
-                                                 @PathVariable("memberId") long memberId);
+                                                 @RequestParam("size") int size,
+                                                 @RequestParam(required = false) String sort);
 
 
     // Task
@@ -122,16 +129,6 @@ public interface ProjectServiceClient {
                                                  @PathVariable("milestoneId") String milestoneId);
 
 
-
-    // ProjectMember
-    @GetMapping("/project-members/roles")
-    List<String> getUserRolesInProject(@RequestParam("projectId") Long projectId,
-                                       @RequestParam("userId") Long userId);
-
-    @GetMapping("/project-members/users")
-    List<Long> getUserIdsInProject(@RequestParam("projectId") Long projectId);
-
-
     // 마일스톤
     // Milestone for Project
     @PostMapping("/projects/{projectId}/milestones")
@@ -198,18 +195,6 @@ public interface ProjectServiceClient {
     @PostMapping("/projects/{projectId}/tasks/{taskId}/tags")
     void deleteTaskTag(@PathVariable("projectId") Long projectId,
                        @PathVariable("taskId") Long taskId);
-
-
-    // ProjectMember
-    // Member for Project
-    @PostMapping("/projects/{projectId}/members")
-    ResponseEntity<Milestone> createProjectMember(@PathVariable("projectId") Long projectId,
-                                                  @RequestBody List<Long> memberIds);
-
-
-    @DeleteMapping("/projects/{projectId}/members/{memberId}")
-    void deleteProjectMember(@PathVariable("projectId") Long projectId,
-                             @PathVariable("memberId") String memberId);
 
 
 }

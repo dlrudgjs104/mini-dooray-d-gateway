@@ -1,9 +1,15 @@
 package com.nhnacademy.minidooraydgateway.controller;
 
+import com.nhnacademy.minidooraydgateway.domain.ProjectMember;
+import com.nhnacademy.minidooraydgateway.domain.User;
+import com.nhnacademy.minidooraydgateway.dto.ProjectMemberDto;
 import com.nhnacademy.minidooraydgateway.service.ProjectMemberService;
+import com.nhnacademy.minidooraydgateway.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -11,19 +17,13 @@ import org.springframework.web.bind.annotation.*;
 public class ProjectMemberController {
 
     private final ProjectMemberService projectMemberService;
+    private final UserService userService;
 
-    // 프로젝트 멤버 추가 처리 - 리스트로 해야함
     @PostMapping
-    public String handleAddProjectMember(@PathVariable Long projectId, @RequestParam Long memberId) {
-        projectMemberService.addMemberToProject(projectId, memberId);
-        return "redirect:/projects/{id}/members";
-    }
-
-    // 프로젝트 멤버 제거 처리
-    @DeleteMapping("/{memberId}")
-    public String handleRemoveProjectMember(@PathVariable Long projectId, @PathVariable Long memberId) {
-        // ProjectApi 호출하여 멤버 제거
-        projectMemberService.removeMemberFromProject(projectId, memberId);
+    public String handleAddProjectMember(@PathVariable Long projectId, @RequestParam List<String> memberEmails) {
+        List<Long> ids = userService.getUserIdsByEmails(memberEmails);
+        projectMemberService.addMemberToProject(projectId, ids);
+        userService.updateUserRole(memberEmails, User.Role.PROJECT_MEMBER.name());
         return "redirect:/projects/{id}/members";
     }
 }

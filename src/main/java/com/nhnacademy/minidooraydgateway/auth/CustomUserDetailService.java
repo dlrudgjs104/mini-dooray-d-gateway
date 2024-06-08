@@ -1,6 +1,7 @@
 package com.nhnacademy.minidooraydgateway.auth;
 
 import com.nhnacademy.minidooraydgateway.domain.User;
+import com.nhnacademy.minidooraydgateway.exception.NonActiveMemberException;
 import com.nhnacademy.minidooraydgateway.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -17,8 +18,6 @@ import java.util.Collections;
 @RequiredArgsConstructor
 public class CustomUserDetailService implements UserDetailsService {
 
-    public static final String DEFAULT_ROLE = "ROLE_ACTIVE";
-
     private final UserService userService;
 
     @Override
@@ -26,6 +25,9 @@ public class CustomUserDetailService implements UserDetailsService {
         User user = userService.getUserByEmail(username);
         if (user == null) {
             throw new UsernameNotFoundException("해당 아이디는 찾을 수 없습니다.");
+        }
+        if (user.getStatus() != User.Status.ACTIVE) {
+            throw new NonActiveMemberException();
         }
         return new CustomUserDetails(
                 user,

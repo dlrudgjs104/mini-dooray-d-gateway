@@ -1,6 +1,6 @@
 package com.nhnacademy.minidooraydgateway.controller;
 
-import com.nhnacademy.minidooraydgateway.dto.UserDto;
+import com.nhnacademy.minidooraydgateway.dto.UserCreateRequest;
 import com.nhnacademy.minidooraydgateway.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -44,7 +44,7 @@ public class AccountControllerTest {
     public void testSignupForm() {
         String viewName = accountController.signupForm(model);
 
-        verify(model).addAttribute(eq("userDto"), any(UserDto.class));
+        verify(model).addAttribute(eq("userDto"), any(UserCreateRequest.class));
         assertEquals("account/signup", viewName);
     }
 
@@ -54,7 +54,7 @@ public class AccountControllerTest {
         when(bindingResult.hasErrors()).thenReturn(true);
         when(bindingResult.getFieldErrors()).thenReturn(Collections.singletonList(new FieldError("userDto", "username", "Username is required")));
 
-        String viewName = accountController.signupSubmit(new UserDto("", ""), bindingResult, model);
+        String viewName = accountController.signupSubmit(new UserCreateRequest("", ""), bindingResult, model);
 
         verify(model).addAttribute(eq("error"), eq("username이(가) 잘못되었습니다."));
         assertEquals("account/signup", viewName);
@@ -65,9 +65,9 @@ public class AccountControllerTest {
     public void testSignupSubmitSuccess() {
         when(bindingResult.hasErrors()).thenReturn(false);
 
-        String viewName = accountController.signupSubmit(new UserDto("username", "password"), bindingResult, model);
+        String viewName = accountController.signupSubmit(new UserCreateRequest("username", "password"), bindingResult, model);
 
-        verify(userService).saveUser(any(UserDto.class));
+        verify(userService).saveUser(any(UserCreateRequest.class));
         assertEquals("redirect:/login", viewName);
     }
 
@@ -75,9 +75,9 @@ public class AccountControllerTest {
     @DisplayName("POST /signup - 사용자 저장 중 예외 발생")
     public void testSignupSubmitException() {
         when(bindingResult.hasErrors()).thenReturn(false);
-        doThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "User already exists")).when(userService).saveUser(any(UserDto.class));
+        doThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "User already exists")).when(userService).saveUser(any(UserCreateRequest.class));
 
-        String viewName = accountController.signupSubmit(new UserDto("username", "password"), bindingResult, model);
+        String viewName = accountController.signupSubmit(new UserCreateRequest("username", "password"), bindingResult, model);
 
         verify(model).addAttribute(eq("error"), eq("User already exists"));
         assertEquals("account/signup", viewName);

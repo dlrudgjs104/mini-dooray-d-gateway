@@ -1,6 +1,6 @@
 package com.nhnacademy.minidooraydgateway.controller;
 
-import com.nhnacademy.minidooraydgateway.dto.UserDto;
+import com.nhnacademy.minidooraydgateway.dto.UserCreateRequest;
 import com.nhnacademy.minidooraydgateway.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,12 +22,12 @@ public class AccountController {
 
     @GetMapping("/signup")
     public String signupForm(Model model) {
-        model.addAttribute("userDto", new UserDto("", ""));
+        model.addAttribute("user", UserCreateRequest.builder().build());
         return "account/signup";
     }
 
     @PostMapping("/signup")
-    public String signupSubmit(@Valid UserDto userDto, BindingResult bindingResult,
+    public String signupSubmit(@Valid UserCreateRequest userCreateRequest, BindingResult bindingResult,
                                Model model) {
         if (bindingResult.hasErrors()) {
             String errorMessage = bindingResult.getFieldErrors().stream()
@@ -38,7 +38,7 @@ public class AccountController {
         }
 
         try {
-            userService.saveUser(userDto);
+            userService.saveUser(userCreateRequest);
             return "redirect:/login";
         } catch (ResponseStatusException ex) {
             model.addAttribute("error", ex.getReason());
