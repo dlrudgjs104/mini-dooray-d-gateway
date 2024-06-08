@@ -25,7 +25,7 @@ public class CustomUserDetailService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("해당 아이디는 찾을 수 없습니다.");
         }
-        if (user.getStatus() == User.Status.ACTIVE) {
+        if (user.getStatus() != User.Status.ACTIVE) {
             throw new NonActiveMemberException();
         }
         return new CustomUserDetails(
