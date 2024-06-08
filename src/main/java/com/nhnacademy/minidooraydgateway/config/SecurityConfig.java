@@ -42,12 +42,6 @@ public class SecurityConfig {
                                 .deleteCookies("JSESSIONID")
                                 .permitAll()
                 )
-                .oauth2Login(oauth2Login ->
-                        oauth2Login
-                                .loginPage("/login")
-                                .defaultSuccessUrl("/", true)
-                                .permitAll()
-                )
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/", "/home", "/signup").permitAll()
