@@ -3,6 +3,7 @@ package com.nhnacademy.minidooraydgateway.service;
 import com.nhnacademy.minidooraydgateway.client.ProjectServiceClient;
 import com.nhnacademy.minidooraydgateway.domain.Project;
 import com.nhnacademy.minidooraydgateway.dto.ProjectCreateDto;
+import com.nhnacademy.minidooraydgateway.dto.ProjectGetByUserIdRequestDto;
 import com.nhnacademy.minidooraydgateway.dto.ProjectGetDto;
 import com.nhnacademy.minidooraydgateway.util.PaginationUtil;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +39,7 @@ public class ProjectService {
 
 
     public Page<ProjectGetDto> getAllProjectsByUserId(Pageable pageable, long userId) {
-        ResponseEntity<Page<ProjectGetDto>> response = projectServiceClient.getAllProjectsByUserId(userId,
+        ResponseEntity<Page<ProjectGetDto>> response = projectServiceClient.getAllProjectsByUserId(ProjectGetByUserIdRequestDto.builder().userId(userId).build(),
                 pageable.getPageNumber(),
                 pageable.getPageSize(),
                 PaginationUtil.createSortParam(pageable));

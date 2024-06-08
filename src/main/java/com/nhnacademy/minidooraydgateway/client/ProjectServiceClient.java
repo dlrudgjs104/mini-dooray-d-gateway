@@ -1,13 +1,9 @@
 package com.nhnacademy.minidooraydgateway.client;
 
 import com.nhnacademy.minidooraydgateway.domain.*;
-import com.nhnacademy.minidooraydgateway.dto.ProjectCreateDto;
-import com.nhnacademy.minidooraydgateway.dto.ProjectGetDto;
-import com.nhnacademy.minidooraydgateway.dto.ProjectMemberDto;
-import com.nhnacademy.minidooraydgateway.dto.TaskCreateRequest;
+import com.nhnacademy.minidooraydgateway.dto.*;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,8 +13,8 @@ import java.util.List;
 public interface ProjectServiceClient {
 
     // 특정 유저의 프로젝트 목록 조회
-    @GetMapping("/users/{userId}/projects")
-    ResponseEntity<Page<ProjectGetDto>> getAllProjectsByUserId(@PathVariable long userId,
+    @GetMapping("projects")
+    ResponseEntity<Page<ProjectGetDto>> getAllProjectsByUserId(@RequestBody ProjectGetByUserIdRequestDto projectGetByUserIdRequestDto,
                                                                @RequestParam("page") int page,
                                                                @RequestParam("size") int size,
                                                                @RequestParam(required = false) String sort);
