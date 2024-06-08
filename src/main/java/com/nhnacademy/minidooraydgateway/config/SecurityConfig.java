@@ -1,5 +1,6 @@
 package com.nhnacademy.minidooraydgateway.config;
 
+import com.nhnacademy.minidooraydgateway.controller.CustomAuthenticationSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +16,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private final CustomAuthenticationSuccessHandler successHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -25,15 +27,13 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .formLogin(formLogin ->
-                                formLogin
-                                        .loginPage("/login")
-                                        .usernameParameter("email")
-                                        .passwordParameter("password")
-                                        .loginProcessingUrl("/login/process")
-                                        .defaultSuccessUrl("/home")  // -> /projects
-//                                .successHandler(successHandler)
-//                                .failureHandler(failureHandler)
-                                        .permitAll()
+                        formLogin
+                                .loginPage("/login")
+                                .usernameParameter("email")
+                                .passwordParameter("password")
+                                .loginProcessingUrl("/login/process")
+                                .successHandler(successHandler)  // 로그인 성공 핸들러 설정
+                                .permitAll()
                 )
                 .logout(logout ->
                         logout.logoutUrl("/logout")
@@ -46,12 +46,10 @@ public class SecurityConfig {
                         authorizeRequests
                                 .requestMatchers("/", "/home", "/signup").permitAll()
                                 .requestMatchers("/projects/**").authenticated()
-//                                .anyRequest().authenticated()
                 )
                 .exceptionHandling(handler ->
                         handler.accessDeniedPage("/access-denied"))
         ;
         return http.build();
     }
-
 }
