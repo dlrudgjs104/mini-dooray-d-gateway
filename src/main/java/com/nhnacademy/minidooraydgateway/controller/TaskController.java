@@ -3,8 +3,7 @@ package com.nhnacademy.minidooraydgateway.controller;
 import com.nhnacademy.minidooraydgateway.domain.Milestone;
 import com.nhnacademy.minidooraydgateway.domain.Tag;
 import com.nhnacademy.minidooraydgateway.domain.Task;
-import com.nhnacademy.minidooraydgateway.dto.ProjectGetDto;
-import com.nhnacademy.minidooraydgateway.dto.TaskCreateRequest;
+import com.nhnacademy.minidooraydgateway.dto.*;
 import com.nhnacademy.minidooraydgateway.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -51,7 +50,7 @@ public class TaskController {
     // Task 상세 정보 페이지
     @GetMapping("/{taskId}")
     public String getTaskDetailsPage(@PathVariable Long projectId, @PathVariable Long taskId, Model model) {
-        Task task = taskService.getTaskByProjectId(projectId, taskId);
+        TaskReadResponseDto task = taskService.getTaskByProjectId(projectId, taskId);
         model.addAttribute("task", task);
         model.addAttribute("projectId", projectId);
         return "task/taskDetail";
@@ -66,7 +65,7 @@ public class TaskController {
 
     // Task 생성 처리
     @PostMapping
-    public String handleCreateTask(@PathVariable Long projectId, @ModelAttribute TaskCreateRequest taskCreateRequest) {
+    public String handleCreateTask(@PathVariable Long projectId, @ModelAttribute TaskCreateDto taskCreateRequest) {
         taskService.createTask(projectId, taskCreateRequest);
         return "redirect:/projects/" + projectId + "/tasks";
     }
@@ -85,7 +84,7 @@ public class TaskController {
     @PostMapping("/{taskId}/edit")
     public String handleEditTask(@PathVariable Long projectId,
                                  @PathVariable Long taskId,
-                                 @ModelAttribute Task taskForm) {
+                                 @ModelAttribute TaskUpdateRequest taskForm) {
         taskService.updateTask(projectId, taskId, taskForm);
         return "redirect:/projects/" + projectId + "/tasks";
     }

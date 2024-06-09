@@ -49,17 +49,17 @@ public interface ProjectServiceClient {
                                            @RequestParam(required = false) String sort);
 
     @GetMapping("/projects/{projectId}/tasks/{taskId}")
-    ResponseEntity<Task> getTaskByProjectId(@PathVariable("projectId") Long projectId,
+    ResponseEntity<TaskReadResponseDto> getTaskByProjectId(@PathVariable("projectId") Long projectId,
                                             @PathVariable("taskId") Long taskId);
 
     @PostMapping("/projects/{projectId}/tasks")
-    ResponseEntity<Task> createTask(@PathVariable("projectId") Long projectId,
-                                    @RequestBody TaskCreateRequest request);
+    ResponseEntity<TaskCreateDto> createTask(@PathVariable("projectId") Long projectId,
+                                    @RequestBody TaskCreateDto request);
 
     @PutMapping("/projects/{projectId}/tasks/{taskId}")
-    ResponseEntity<Task> updateTask(@PathVariable("projectId") Long projectId,
+    ResponseEntity<Void> updateTask(@PathVariable("projectId") Long projectId,
                                     @PathVariable("taskId") Long taskId,
-                                    @RequestBody Task request);
+                                    @RequestBody TaskUpdateRequest request);
 
     @DeleteMapping("/projects/{projectId}/tasks/{taskId}")
     ResponseEntity<Void> deleteTask(@PathVariable("projectId") Long projectId,

@@ -1,0 +1,150 @@
+### 프로젝트 추가
+POST http://localhost:8080/projects
+Content-Type: application/json
+
+{
+  "projectName": "projectTest",
+  "projectStatus": "ACTIVE"
+}
+
+### 프로젝트 리스트
+GET http://localhost:8080/projects
+
+### 프로젝트 확인
+GET http://localhost:8080/projects/1
+
+### 프로젝트 생성한 ADMIN 확인
+GET http://localhost:8080/projects/1/members
+
+### 프로젝트에 멤버 추가
+POST http://localhost:8080/projects/1/members
+Content-Type: application/json
+
+{
+  "memberPk": {
+    "memberId": 2,
+    "projectId": 1
+  },
+  "project": {
+    "projectId": 1,
+    "projectName": "projectTest",
+    "projectStatus": "ACTIVE"
+  },
+  "memberRole": "MEMBER"
+}
+
+### 프로젝트에 추가된 멤버 확인
+GET http://localhost:8080/projects/1/members
+
+### 프로젝트에 마일스톤 추가
+POST http://localhost:8080/projects/1/milestones
+Content-Type: application/json
+
+{
+  "milestoneName": "6월1주차",
+  "milestoneProgress": 0
+
+}
+
+
+
+###마일스톤 리스트
+GET http://localhost:8080/projects/1/milestones
+
+###프로젝트에 테스크 추가
+POST http://localhost:8080/projects/1/tasks
+Content-Type: application/json
+
+{
+  "taskName": "TestTask",
+  "taskDescription": "TaskContent",
+  "taskStatus": "TODO"
+}
+
+###테스크 업데이트
+PUT http://localhost:8080/projects/1/tasks/13
+Content-Type: application/json
+
+{
+  "taskName": "updateTask",
+  "taskDescription": "updateContent",
+  "taskStatus": "IN_PROGRESS"
+}
+
+###테스크 리스트
+GET http://localhost:8080/projects/1/tasks
+
+
+
+### 코멘트 추가
+POST http://localhost:8080/projects/1/tasks/1/comments
+Content-Type: application/json
+
+{
+  "commentContent": "댓글 테스트"
+}
+
+### 코멘트 리스트
+GET http://localhost:8080/projects/1/tasks/1/comments
+
+### 코멘트 찾기
+GET http://localhost:8080/projects/1/tasks/1/comments/1
+
+### 코멘트 업데이트
+PUT http://localhost:8080/projects/1/tasks/1/comments/1
+Content-Type: application/json
+
+{
+  "commentContent": "수정된 코멘트"
+}
+
+
+
+
+
+
+
+
+
+
+
+###태그 추가
+POST http://localhost:8080/tags
+Content-Type: application/json
+
+{
+  "tagName": "1팀"
+}
+
+###태그 업데이트
+PUT http://localhost:8080/tags/1
+Content-Type: application/json
+
+{
+  "tagName": "신입팀"
+}
+
+###태그 리스트
+GET http://localhost:8080/tags
+
+###태그 찾기
+GET http://localhost:8080/tags/1
+
+###태그 삭제
+DELETE http://localhost:8080/tags/1
+
+
+
+###
+PUT localhost:8080/projects/1/milestones/1
+Content-Type: application/json
+
+{
+  "milestoneName": "6월1주차",
+  "milestoneProgress": 0,
+  "milestoneStartDate": "2023-06-06T17:50:16+09:00[Asia/Seoul]",
+  "milestoneEndDate": "2023-06-09T17:50:16+09:00[Asia/Seoul]"
+}
+
+###
+DELETE localhost:8080/projects/1/milestones/1

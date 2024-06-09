@@ -2,7 +2,10 @@ package com.nhnacademy.minidooraydgateway.service;
 
 import com.nhnacademy.minidooraydgateway.client.ProjectServiceClient;
 import com.nhnacademy.minidooraydgateway.domain.Task;
+import com.nhnacademy.minidooraydgateway.dto.TaskCreateDto;
 import com.nhnacademy.minidooraydgateway.dto.TaskCreateRequest;
+import com.nhnacademy.minidooraydgateway.dto.TaskReadResponseDto;
+import com.nhnacademy.minidooraydgateway.dto.TaskUpdateRequest;
 import com.nhnacademy.minidooraydgateway.util.PaginationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -15,8 +18,8 @@ import org.springframework.stereotype.Service;
 public class TaskService {
     private final ProjectServiceClient projectServiceClient;
 
-    public Task getTaskByProjectId(Long projectId, Long taskId) {
-        ResponseEntity<Task> response = projectServiceClient.getTaskByProjectId(projectId, taskId);
+    public TaskReadResponseDto getTaskByProjectId(Long projectId, Long taskId) {
+        ResponseEntity<TaskReadResponseDto> response = projectServiceClient.getTaskByProjectId(projectId, taskId);
         return response.getBody();
     }
 
@@ -28,11 +31,11 @@ public class TaskService {
         return null;
     }
 
-    public void createTask(Long projectId, TaskCreateRequest task) {
+    public void createTask(Long projectId, TaskCreateDto task) {
         projectServiceClient.createTask(projectId, task);
     }
 
-    public void updateTask(Long projectId, Long taskId, Task task) {
+    public void updateTask(Long projectId, Long taskId, TaskUpdateRequest task) {
         projectServiceClient.updateTask(projectId, taskId, task);
     }
 
